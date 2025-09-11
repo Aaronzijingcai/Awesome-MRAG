@@ -1,7 +1,7 @@
 ## 版本 V1.0.0
 
 ## 介绍
-基于LangChain应用开发框架，使用Qwen3-Embedding-0.6B进行文档Embedding和DeepSeek-R1-Distill-Qwen-1.5B进行推理。使用Milvus进行向量存储。使用FastAPI构建Restful API提供接口服务。
+基于LangChain应用开发框架，使用vLLM部署Qwen3-Embedding-0.6B和DeepSeek-R1-Distill-Qwen-1.5B，分别进行Embedding和Reasoning。使用Milvus进行向量存储。使用FastAPI构建Restful API提供接口服务。
 
 ## 功能
 1. 离线构建本地知识库
@@ -25,7 +25,7 @@
     ```
 
 ## 代码逻辑图
-![项目架构图](./pic/v1.0.0.png)
+![项目架构图](./pic/MRAGV1.0.0.png)
 
 ## 效果图
 ![项目架构图](./pic/Postman_rag_query.png)

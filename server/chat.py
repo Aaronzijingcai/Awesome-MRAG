@@ -62,7 +62,7 @@ async def rag_query_endpoint(request: RAGRequest):
             page_content=doc.page_content, metadata=doc.metadata
         )
         sources.append(source_doc)
-    
+    # 5. 组合response和sources给RAGResponse
     return RAGResponse(response=result["response"], sources=sources)
 
 

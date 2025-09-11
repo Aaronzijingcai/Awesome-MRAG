@@ -8,7 +8,7 @@ from vllm import LLM
 
 import config
 
-
+# 继承LangChain的Embeddings，接口规范要求必须重写embed_documents和embed_query
 class VLLMEmbedding(Embeddings):
     def __init__(self, model_name: str, **kwargs):
         super().__init__(**kwargs)

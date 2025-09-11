@@ -1,25 +1,31 @@
 ## 版本 V1.0.0
 
 ## 介绍
-基于LangChain应用开发框架，使用Qwen3-Embedding-0.6B进行文档Embedding和DeepSeek-R1-Distill-Qwen-1.5B进行推理。使用FastAPI构建Restful API。
+基于LangChain应用开发框架，使用Qwen3-Embedding-0.6B进行文档Embedding和DeepSeek-R1-Distill-Qwen-1.5B进行推理。使用FastAPI构建Restful API。使用Milvus进行向量存储。
 
 ## 功能
 1. 离线构建本地知识库
 2. 在线启动问答服务
+3. 推理依据可溯源
 
 ## 使用步骤
 
 1. 下载Qwen3-Embedding-0.6B和DeepSeek-R1-Distill-Qwen-1.5B模型
 2. 运行脚本启动DeepSeek-R1服务
     ```bash
-    python server/api_router.py
+    bash ./scripts/start.sh
     ```
 3. 离线构建本地知识库
     ```bash
-    python server/api_router.py
+    python ./server/kn_builder.py
     ```
 4. 在线启动问答服务
     ```bash
-    python server/api_router.py
+    python ./server/chat.py
     ```
-5. Postman在线测试问答服务
+
+## 代码逻辑图
+![项目架构图](./pic/v1.0.0.png)
+
+## 效果图
+![项目架构图](./pic/Postman_rag_query.png)

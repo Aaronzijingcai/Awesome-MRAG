@@ -1,6 +1,6 @@
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 # --- MODEL ---
 REASONING_MODEL_PATH = "/NAS/caizj/models/deepseek/DeepSeek-R1-Distill-Qwen-1.5B/"

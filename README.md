@@ -1,10 +1,10 @@
-# 版本 V1.0.0
+# 版本 V1.0
 
 ## 介绍
 基于LangChain应用开发框架，使用vLLM部署Qwen3-Embedding-0.6B和DeepSeek-R1-Distill-Qwen-1.5B，分别进行Embedding和Reasoning。使用Milvus进行向量存储。使用FastAPI构建Restful API提供接口服务。
 
 ## 🚀 项目演示
-[![MRAG 项目演示](./pic/MRAGV1演示.gif)](./pic/MRAGV1演示.mp4)
+[![MRAG 项目演示](./pic/MRAGV1.0演示.gif)](./pic/MRAGV1.0演示.mp4)
 
 ## ✨核心亮点
 * 🔐数据私有化与离线支持：无需联网，所有文档处理和模型推理均在本地完成。一键上传PDF文档，系统自动进行向量化和索引
@@ -31,12 +31,12 @@
     ```
 
 ## 代码逻辑图
-![项目架构图](./pic/MRAGV1.0.0.png)
+![项目架构图](./pic/MRAGV1.0.png)
 
 
 ## 🗺️ 未来蓝图
 
-V1.0.0 仅仅是我们的起点。我们已经规划了清晰的迭代路径，让MRAG变得更加强大：
+V1.0 仅仅是我们的起点。我们已经规划了清晰的迭代路径，让MRAG变得更加强大：
 * **[V2.0] 迈向多模态:** 引入OCR技术，支持对扫描版PDF和图片内容的理解和问答。
 * **[V3.0] 原生多模态:** 基于ColPali实现真正的图文混合检索与问答。
 * **[V4.0] 进化为智能代理 (Agent):** 引入 Agent 概念，实现能够自主规划、执行复杂任务的 DeepSearch 深度搜索智能体

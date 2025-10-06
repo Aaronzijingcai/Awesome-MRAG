@@ -1,0 +1,14 @@
+{
+  "servers": [
+    {
+      "name": "bailian-websearch",
+      "transport": "http",
+      "url": "https://dashscope.aliyuncs.com/api/v1/mcp/bailian-websearch",
+      "headers": {
+        "Authorization": "Bearer YOUR_DASHSCOPE_API_KEY"
+      },
+      "description": "阿里云百炼Web搜索服务",
+      "enabled": true
+    }
+  ]
+}

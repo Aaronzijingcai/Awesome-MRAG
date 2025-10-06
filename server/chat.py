@@ -8,6 +8,7 @@ from loguru import logger
 from pydantic import BaseModel, Field
 from rag_chain import create_rag_chain
 from vector_store import VLLMEmbedding, load_existing_vector_store
+from mcp_manager import mcp_manager as mcp
 
 
 class RAGRequest(BaseModel):
@@ -31,8 +32,21 @@ class RAGResponse(BaseModel):
 embedding_model = VLLMEmbedding(model_name=config.EMBEDDING_MODEL_PATH)
 vector_store = load_existing_vector_store(embedding_model)
 retriever = vector_store.as_retriever(search_kwargs={"k": config.RETRIEVER_TOP_K})
-rag_chain = create_rag_chain(retriever)
+
+# 根据配置决定是否启用MCP
+mcp_service = None
+if config.ENABLE_WEB_SEARCH:
+    try:
+        from mcp_manager import mcp_manager
+        if mcp_manager.initialize():
+            mcp_service = mcp_manager
+            logger.info("✅ MCP服务已启用")
+    except Exception as e:
+        logger.warning(f"MCP服务初始化失败: {e}")
+
+rag_chain = create_rag_chain(retriever,mcp_service)
 logger.info("✅ RAG service initialized successfully")
+
 
 
 app = FastAPI()
@@ -54,15 +68,21 @@ async def rag_query_endpoint(request: RAGRequest):
         query=request.query,
     )
 
-    result = rag_chain.invoke(query_with_instruct)  # 3. 执行rag_chain
+    # 3. 区分embedding所需query和网络搜索所需query
+    query_data = {
+        "query_with_instruct": query_with_instruct,
+        "original_query": request.query
+    }
 
-    sources = []     # 4. 文档溯源
+    result = rag_chain.invoke(query_data)  # 4. 执行rag_chain
+
+    sources = []     # 5. 文档溯源
     for doc in result["sources"]:
         source_doc = SourceDocument(
             page_content=doc.page_content, metadata=doc.metadata
         )
         sources.append(source_doc)
-    # 5. 组合response和sources给RAGResponse
+    # 6. 组合response和sources给RAGResponse
     return RAGResponse(response=result["response"], sources=sources)
 
 

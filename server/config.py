@@ -1,6 +1,8 @@
 import os
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+from dotenv import load_dotenv
+load_dotenv()
 
 # --- MODEL ---
 REASONING_MODEL_PATH = "/NAS/caizj/models/deepseek/DeepSeek-R1-Distill-Qwen-1.5B/"
@@ -25,3 +27,8 @@ API_PORT = 8992
 
 # --- Document format ---
 SUPPORTED_FORMATS = ['.pdf']
+
+# --- MCP Services ---
+ENABLE_WEB_SEARCH = True
+MCP_CONFIG_PATH = "/NAS/caizj/project/Awesome-MRAG/server/mcp_servers_config.json"
+DASHSCOPE_API_KEY = os.getenv("DASHSCOPE_API_KEY")

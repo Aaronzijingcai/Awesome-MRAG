@@ -8,6 +8,7 @@ from vllm import LLM
 
 import config
 
+
 # 继承LangChain的Embeddings，接口规范要求必须重写embed_documents和embed_query
 class VLLMEmbedding(Embeddings):
     def __init__(self, model_name: str, **kwargs):
@@ -23,9 +24,12 @@ class VLLMEmbedding(Embeddings):
         return outputs[0].outputs.embedding
 
     def get_detailed_instruct(self, task_description: str, query: str) -> str:
-        return f"Instruct: {task_description}\nQuery: {query}"  # Qwen3 Embedding需要该参数
+        return (
+            f"Instruct: {task_description}\nQuery: {query}"  # Qwen3 Embedding需要该参数
+        )
 
 
+# 初始化存储，kn_builder会调用
 def create_vector_store(
     documents: List[Document], embedding_model: VLLMEmbedding
 ) -> Milvus:
@@ -41,12 +45,12 @@ def create_vector_store(
     return vector_store
 
 
+# 加载Milvus，用于增量存储，
 def load_existing_vector_store(embedding_model: VLLMEmbedding = None) -> Milvus:
     vector_store = Milvus(  # 使用vector_store无需指定document参数
         embedding_function=embedding_model,
         connection_args={"uri": config.MILVUS_URI},
         collection_name=config.MILVUS_COLLECTION_NAME,
     )
-    
     logger.info("connecting to Milvus vector store successfully")
     return vector_store

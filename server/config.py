@@ -8,6 +8,7 @@ EMBEDDING_MODEL_PATH = "/NAS/caizj/models/qwen/Qwen3-Embedding-0.6B/"
 
 # --- DATASET ---
 RAW_DATA_PATH = "/NAS/caizj/project/Awesome-MRAG/dataset/raw_data"
+UNUPDATED_DATA_PATH = "/NAS/caizj/project/Awesome-MRAG/dataset/unupdate_data"
 
 # --- Milvus ---
 MILVUS_URI = "/NAS/caizj/project/Awesome-MRAG/dataset/milvus/mrag_milvus.db"

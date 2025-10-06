@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from typing import List
 
+from langchain_community.document_loaders.parsers.pdf import PyPDFium2Parser
+
 import config
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_core.documents import Document
@@ -15,11 +17,13 @@ class UnifiedDocumentLoader:
             chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP
         )
 
+    # 加载PDF文件
+    # 输入PDF路径，输出List[Document]
     def load_pdf(self, file_path: str) -> List[Document]:
         loader = PyPDFLoader(file_path)
         pages = loader.load()
 
-        documents = []
+        PDFs = []
         for i, page in enumerate(pages):
             doc = Document(
                 page_content=page.page_content,
@@ -29,20 +33,12 @@ class UnifiedDocumentLoader:
                     "minio_id": 444, 
                 },
             )
-            documents.append(doc)
+            PDFs.append(doc)
 
         logger.info(f"成功提取PDF文档 {os.path.basename(file_path)} - {len(pages)} 页")
-        return documents
-
-    # 加载单个文档
-    def load_document(self, file_path: str) -> List[Document]:
-        extension = Path(file_path).suffix.lower()
-
-        if extension == ".pdf":
-            return self.load_pdf(file_path)
-        else:
-            raise ValueError(f"不支持的文件格式: {extension}")
-
+        return PDFs
+    
+    # 
     def load_and_split_documents(self, input_path: str) -> List[Document]:
         if os.path.isfile(input_path):
             documents = self.load_document(input_path)
@@ -62,6 +58,16 @@ class UnifiedDocumentLoader:
         logger.info(f"文档被分割成 {len(splits)} 个文本块")
         return splits
 
+    # 加载单个文件
+    def load_document(self, file_path: str) -> List[Document]:
+        extension = Path(file_path).suffix.lower()
+
+        if extension == ".pdf":
+            return self.load_pdf(file_path)
+        else:
+            raise ValueError(f"不支持的文件格式: {extension}")
+
+    # 加载文件夹
     def _load_directory(self, directory_path: str) -> List[Document]:
         """加载目录中的所有文档"""
         all_documents = []
@@ -79,3 +85,4 @@ class UnifiedDocumentLoader:
                     logger.error(f"处理文件 {file_path} 时出错: {e}")
 
         return all_documents
+

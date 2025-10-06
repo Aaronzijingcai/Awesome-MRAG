@@ -18,6 +18,7 @@ def build_offline_knowledge_base():
     for file_path in Path(input_dir).rglob("*"):
         if file_path.is_file() and file_path.suffix.lower() in config.SUPPORTED_FORMATS:
             try:
+                # 1. 加载文档
                 documents = document_loader.load_and_split_documents(str(file_path))
                 all_documents.extend(documents)
             except Exception as e:
@@ -29,7 +30,7 @@ def build_offline_knowledge_base():
 
     logger.info(f"Successfully processed {len(all_documents)} document chunks.")
 
-    # Initialize the embedding model and create the vector store
+    # 
     embedding_model = VLLMEmbedding(model_name=config.EMBEDDING_MODEL_PATH)
     create_vector_store(all_documents, embedding_model)
 

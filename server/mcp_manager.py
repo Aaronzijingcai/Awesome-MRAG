@@ -44,7 +44,7 @@ class MCPManager:
             # 获取Web搜索工具
             tools = self.store.for_store().for_langchain().list_tools()
             for tool in tools:
-                if "web" in tool.name.lower() or "search" in tool.name.lower():
+                if "bailian_web_search" in tool.name.lower():
                     self.web_search_tool = tool
                     logger.info(f"找到Web搜索工具: {tool.name}")
                     break
@@ -61,7 +61,11 @@ class MCPManager:
             return None
         
         try:
-            result = self.web_search_tool.invoke(query)
+            result = self.web_search_tool.invoke({
+                "query": query,
+                "count": 5,
+                "ctx": ""
+            })
             logger.info(f"Web搜索成功: {query[:50]}...")
             return result
         except Exception as e:
@@ -70,4 +74,4 @@ class MCPManager:
 
 
 # 全局MCP管理器实例
-mcp_manager = MCPManager()
+MCP_Service = MCPManager()

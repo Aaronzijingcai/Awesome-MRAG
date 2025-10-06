@@ -8,7 +8,7 @@ from loguru import logger
 from pydantic import BaseModel, Field
 from rag_chain import create_rag_chain
 from vector_store import VLLMEmbedding, load_existing_vector_store
-from mcp_manager import mcp_manager as mcp
+from mcp_manager import MCP_Service
 
 
 class RAGRequest(BaseModel):
@@ -37,9 +37,8 @@ retriever = vector_store.as_retriever(search_kwargs={"k": config.RETRIEVER_TOP_K
 mcp_service = None
 if config.ENABLE_WEB_SEARCH:
     try:
-        from mcp_manager import mcp_manager
-        if mcp_manager.initialize():
-            mcp_service = mcp_manager
+        if MCP_Service.initialize():
+            mcp_service = MCP_Service
             logger.info("✅ MCP服务已启用")
     except Exception as e:
         logger.warning(f"MCP服务初始化失败: {e}")

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Activate conda environment
-source ~/miniconda3/etc/profile.d/conda.sh
-conda activate ai
+source /NAS/caizj/miniconda3/etc/profile.d/conda.sh
+conda activate df
 
 # Start VLLM API server in the background
 nohup python -m vllm.entrypoints.openai.api_server \

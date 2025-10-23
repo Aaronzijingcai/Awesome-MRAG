@@ -1,5 +1,5 @@
 import config
-from langchain import hub
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from loguru import logger
@@ -73,9 +73,12 @@ def create_rag_chain(retriever, mcp_service=None):
     logger.info("Init RAG chain")
 
     chat_model = create_chat_model()
-    prompt = hub.pull(
-        "rlm/rag-prompt"
-    )  # 该官方Prompt需要{"context","question"}俩个参数
+    template = """You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+Question: {question} 
+Context: {context} 
+Answer:"""
+    prompt = ChatPromptTemplate.from_template(template)
+
     rag_chain = (
         RunnableLambda(lambda query_data: retrieve_and_format(retriever, query_data, mcp_service))
         | {
